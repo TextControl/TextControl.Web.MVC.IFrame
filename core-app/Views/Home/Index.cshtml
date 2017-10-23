@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-8 editor">
+        
+        <iframe id="TXTextControl" src="http://localhost:2957/"></iframe>
+        
+        <input type="button" value="Load Selection" onclick="SendMessage()" />
+
+    </div>
+</div>
+
+<script>
+    function SendMessage() {
+        var receiver = document.getElementById('TXTextControl').contentWindow;
+        var message = `{"txtextcontrol": {"method": "loadDocument",
+            "parameter": "This is some <b>HTML</b> text."
+            }}`;
+
+        receiver.postMessage(message, 'http://localhost:2957/');
+    }
+</script>

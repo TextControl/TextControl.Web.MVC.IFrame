@@ -1,0 +1,32 @@
+﻿@using TXTextControl.Web
+@using TXTextControl.Web.MVC
+
+@Html.TXTextControl().TextControl(settings =>
+{
+    settings.Dock = DockStyle.Window;
+}).Render()
+
+<script>
+    window.onload = function () {
+
+        function receiveMessage(e) {
+          
+            if (e.origin !== "http://localhost:3053")
+                return;
+
+            var message = JSON.parse(e.data);
+
+            if (message.txtextcontrol == null)
+                return;
+
+            switch (message.txtextcontrol.method) {
+                case "loadDocument": {
+                    var encoded = btoa(message.txtextcontrol.parameter); 
+                    TXTextControl.loadSelection(TXTextControl.StreamType.HTMLFormat, encoded);
+                }
+             }
+        }
+
+        window.addEventListener('message', receiveMessage);
+    }
+</script>
